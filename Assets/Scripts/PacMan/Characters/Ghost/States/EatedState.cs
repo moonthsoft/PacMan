@@ -16,11 +16,15 @@ namespace Moonthsoft.PacMan
             ghost.Animator.SetBool("frightened", false);
             ghost.Animator.SetBool("frightenedFinishing", false);
             ghost.Animator.SetBool("eated", true);
+
+            ghost.LevelManager.AddGhostEated();
         }
 
         public void Exit()
         {
             ghost.Animator.SetBool("eated", false);
+
+            ghost.LevelManager.RemoveGhostEated();
         }
 
         protected override List<NodeGraph> GetPath()

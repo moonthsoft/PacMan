@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c88b7c57d18976d4391e2203817c707b, type: 3}
   m_Name: Configuration
   m_EditorClassIdentifier: 
-  _numPlayerLives: 3
+  _numPlayerLives: 2
   _lastLevel: 20
   _timeBlinkPowerUp: 2
   _timeSpawnGhost:

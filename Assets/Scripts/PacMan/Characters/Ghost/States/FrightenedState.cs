@@ -12,10 +12,10 @@ namespace Moonthsoft.PacMan
             ghost.TurnAround();
         }
 
-        public void Exit()
-        {
-            ghost.TurnAround();
-        }
+        //public void Exit()
+        //{
+        //    ghost.TurnAround();
+        //}
 
         protected override List<NodeGraph> GetPath()
         {

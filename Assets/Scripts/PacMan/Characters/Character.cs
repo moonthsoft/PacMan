@@ -11,13 +11,13 @@ namespace Moonthsoft.PacMan
 
         [SerializeField] protected Animator animator;
 
+        protected bool isMoving = false;
+
         private LevelManager _levelManager;
-        [Inject] private void InjectLevelManager(LevelManager levelManager) { _levelManager = levelManager; }
+
         public LevelManager LevelManager { get { return _levelManager; } }
 
         public NodeGraph CurrentNode { get; set; }
-
-        protected bool isMoving = false;
 
         public Direction CurrentDir { get; protected set; }
 
@@ -27,13 +27,7 @@ namespace Moonthsoft.PacMan
 
         protected abstract float GetSpeedPercentage();
 
-        public virtual void ResetCharacter()
-        {
-            CurrentNode = GetInitialNode();
-            transform.position = CurrentNode.transform.position;
-
-            animator.Rebind();
-        }
+        [Inject] private void InjectLevelManager(LevelManager levelManager) { _levelManager = levelManager; }
 
         private void Awake()
         {
@@ -43,6 +37,14 @@ namespace Moonthsoft.PacMan
         private void FixedUpdate()
         {
             Movement();
+        }
+
+        public virtual void ResetCharacter()
+        {
+            CurrentNode = GetInitialNode();
+            transform.position = CurrentNode.transform.position;
+
+            animator.Rebind();
         }
 
         protected void Movement()
@@ -59,6 +61,22 @@ namespace Moonthsoft.PacMan
             }
         }
 
+        protected void SetMove(bool active)
+        {
+            isMoving = active;
+            animator.SetBool("isMoving", active);
+        }
+
+        protected void SetDirection(Direction direction)
+        {
+            CurrentDir = direction;
+
+            var movement = GetVectorDirection(direction);
+
+            animator.SetFloat("horizontal", movement.x);
+            animator.SetFloat("vertical", movement.y);
+        }
+
         private void CheckReachedNode()
         {
             if (IsInNode(CurrentDir))
@@ -69,12 +87,6 @@ namespace Moonthsoft.PacMan
 
                 GetNextNode();
             }
-        }
-
-        protected void SetMove(bool active)
-        {
-            isMoving = active;
-            animator.SetBool("isMoving", active);
         }
 
         private bool IsInNode(Direction direction)
@@ -90,16 +102,6 @@ namespace Moonthsoft.PacMan
             Debug.LogError("Incorrect direction");
 
             return false;
-        }
-
-        protected void SetDirection(Direction direction)
-        {
-            CurrentDir = direction;
-
-            var movement = GetVectorDirection(direction);
-
-            animator.SetFloat("horizontal", movement.x);
-            animator.SetFloat("vertical", movement.y);
         }
 
         private Vector2 GetVectorDirection(Direction direction)

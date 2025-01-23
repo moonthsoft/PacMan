@@ -7,7 +7,7 @@ namespace Moonthsoft.PacMan.Config
     public class Configuration : ScriptableObject
     {
         [Header("The number of lives the player has befora a game over")]
-        [SerializeField] private int _numPlayerLives = 3;
+        [SerializeField] private int _numPlayerLives = 2;
 
         [Header("The level at which ghosts no longer enter in Frightened or Scatter mode")]
         [SerializeField] private int _lastLevel = 20;

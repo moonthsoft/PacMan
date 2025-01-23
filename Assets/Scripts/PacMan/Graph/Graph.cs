@@ -6,21 +6,30 @@ namespace Moonthsoft.PacMan
 {
     public class Graph : MonoBehaviour
     {
-        public static bool ShowGizmos { get; set; }
-
-        public static List<NodeGraph> Nodes { get; } = new();
-
-
         [SerializeField] private NodeGraph _playerInitialNode;
-        public NodeGraph PlayerInitialNode { get { return _playerInitialNode; } }
 
         [SerializeField] private NodeGraph _blinkyInitialNode;
         [SerializeField] private NodeGraph _pinkyInitialNode;
         [SerializeField] private NodeGraph _inkyInitialNode;
         [SerializeField] private NodeGraph _clydeInitialNode;
 
+        [SerializeField] private NodeGraph _blinkyScatterNode;
+        [SerializeField] private NodeGraph _pinkyScatterNode;
+        [SerializeField] private NodeGraph _inkyScatterNode;
+        [SerializeField] private NodeGraph _clydeScatterNode;
+
         [SerializeField] private NodeGraph _nodeTunnelA;
         [SerializeField] private NodeGraph _nodeTunnelB;
+
+        public static bool ShowGizmos { get; set; }
+
+        public List<NodeGraph> Nodes { get; } = new();
+
+        public NodeGraph PlayerInitialNode { get { return _playerInitialNode; } }
+
+        public NodeGraph GhostSpawnNode { get { return GetGhostInitialNode(GhostType.Blinky); } }
+        public NodeGraph GhostHomeNode { get { return GetGhostInitialNode(GhostType.Pinky); } }
+
 
         public NodeGraph GetGhostInitialNode(GhostType ghostType)
         {
@@ -36,15 +45,7 @@ namespace Moonthsoft.PacMan
 
             return null;
         }
-
-        public NodeGraph GhostSpawnNode { get { return GetGhostInitialNode(GhostType.Blinky); } }
-        public NodeGraph GhostHomeNode { get { return GetGhostInitialNode(GhostType.Pinky); } }
-
-        [SerializeField] private NodeGraph _blinkyScatterNode;
-        [SerializeField] private NodeGraph _pinkyScatterNode;
-        [SerializeField] private NodeGraph _inkyScatterNode;
-        [SerializeField] private NodeGraph _clydeScatterNode;
-
+        
         public NodeGraph GetGhostScatterNode(GhostType ghostType)
         {
             switch (ghostType)
@@ -60,7 +61,7 @@ namespace Moonthsoft.PacMan
             return null;
         }
 
-        public static NodeGraph GetNearestNode(Vector2 pos)
+        public NodeGraph GetNearestNode(Vector2 pos)
         {
             NodeGraph nodeAux = null;
             float minSize = float.MaxValue;

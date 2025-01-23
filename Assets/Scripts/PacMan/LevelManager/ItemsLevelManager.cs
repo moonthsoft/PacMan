@@ -1,3 +1,5 @@
+using Moonthsoft.Core.Definitions.Sounds;
+using Moonthsoft.Core.Managers;
 using Moonthsoft.PacMan.Config;
 using System;
 using System.Collections;
@@ -14,16 +16,20 @@ namespace Moonthsoft.PacMan
         public event Action DeactivePowerUpEvent;
 
         private readonly LevelManager _levelmanager;
+        private readonly IAudioManager _audioManager;
 
         private int _numDots = 0;
         private readonly List<Dot> _dots = new();
         private readonly List<PowerUp> _powerUps = new();
+        private bool _eatDotSound1 = true;
 
         private IEnumerator _waitFinishPowerUpCoroutine = null;
 
-        public ItemsLevelManager(LevelManager levelmanager)
+        public ItemsLevelManager(LevelManager levelmanager, IAudioManager audioManager)
         {
             _levelmanager = levelmanager;
+
+            _audioManager = audioManager;
         }
 
         public void AddDot(Dot dot)
@@ -34,6 +40,8 @@ namespace Moonthsoft.PacMan
 
         public void RemoveDot(Action completeLevel)
         {
+            EatDotSound();
+
             _numDots--;
 
             //TODO:
@@ -52,9 +60,13 @@ namespace Moonthsoft.PacMan
 
         public void ActivePowerUp(Configuration config, int currentLevel)
         {
+            EatDotSound();
+
             if (currentLevel < config.LastLevel)
             {
                 ActivePowerUpEvent?.Invoke();
+
+                _levelmanager.ActiveMusic(true);
 
                 if (_waitFinishPowerUpCoroutine != null)
                 {
@@ -81,6 +93,15 @@ namespace Moonthsoft.PacMan
             }
         }
 
+        private void EatDotSound()
+        {
+            var clip = _eatDotSound1 ? Fx.EatDot1 : Fx.EatDot2;
+
+            _eatDotSound1 = !_eatDotSound1;
+
+            _audioManager.PlayFx(clip);
+        }
+
         private IEnumerator WaitFinishPowerUpCoroutine(Configuration config)
         {
             int indx = _levelmanager.GetIndex(config.DurationPowerUp.Length);
@@ -98,6 +119,8 @@ namespace Moonthsoft.PacMan
             yield return new WaitForSeconds(config.TimeBlinkPowerUp);
 
             DeactivePowerUpEvent?.Invoke();
+
+            _levelmanager.ActiveMusic(false);
 
             _waitFinishPowerUpCoroutine = null;
         }

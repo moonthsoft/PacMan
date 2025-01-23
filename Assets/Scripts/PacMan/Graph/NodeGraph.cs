@@ -125,7 +125,7 @@ namespace Moonthsoft.PacMan
         {
             if (_toGraph)
             {
-                Graph.Nodes.Add(this);
+                _graph.Nodes.Add(this);
             }
 
             for (int i = 0; i < _sizeNodes.Length; ++i)

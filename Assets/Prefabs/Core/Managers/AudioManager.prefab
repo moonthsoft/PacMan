@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2518790108194822075
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8910612022620810820}
+  - component: {fileID: 1550154065300342892}
+  - component: {fileID: 8366580424788775192}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8910612022620810820
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2518790108194822075}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1550154065300342892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2518790108194822075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 346033aca2946574da696a00a5856576, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mixer: {fileID: 0}
+  _mixerMaster: {fileID: 0}
+  _soundsDataFx:
+  - clip: {fileID: 8300000, guid: 10a3fdf15a61bfe4f958731fceb860ca, type: 3}
+    volume: 0.2
+    name: 0
+  - clip: {fileID: 8300000, guid: 831a6cff3a1cad54d905b8c290692200, type: 3}
+    volume: 0.2
+    name: 1
+  - clip: {fileID: 8300000, guid: 3f2dedd00fa8e8b498808fe422549604, type: 3}
+    volume: 0.2
+    name: 2
+  - clip: {fileID: 8300000, guid: 510660619c610e448b5febf428c77d02, type: 3}
+    volume: 0.2
+    name: 3
+  - clip: {fileID: 8300000, guid: acbc44033a462e64986e0b31d829f719, type: 3}
+    volume: 0.2
+    name: 4
+  - clip: {fileID: 0}
+    volume: 0.2
+    name: 5
+  - clip: {fileID: 0}
+    volume: 0.2
+    name: 6
+  - clip: {fileID: 0}
+    volume: 0.2
+    name: 6
+  - clip: {fileID: 0}
+    volume: 0.2
+    name: 8
+  - clip: {fileID: 8300000, guid: a0c2c1c2a570fc348b7d86119b460099, type: 3}
+    volume: 0.2
+    name: 9
+  - clip: {fileID: 8300000, guid: 50d0ff7c2fd6d04459303277c57bb439, type: 3}
+    volume: 0.4
+    name: 10
+  - clip: {fileID: 8300000, guid: 42d078d6872bd8a459fc17aa23ac124d, type: 3}
+    volume: 0.2
+    name: 11
+  masterVolume: 0
+--- !u!114 &8366580424788775192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2518790108194822075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 468d33de5c7035a43b3ea83bf8a0aff9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

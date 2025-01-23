@@ -18,12 +18,12 @@ namespace Moonthsoft.PacMan
         private IEnumerator _iterationModeGhostCoroutine = null;
         private IEnumerator _increasesTotalTime = null;
 
+        public bool IsChaseMode { get { return _isChaseMode; } }
+
         public TimerLevelManager(LevelManager levelmanager)
         {
             _levelmanager = levelmanager;
         }
-
-        public bool IsChaseMode { get { return _isChaseMode; } }
 
         public void ActiveTimer(Configuration config)
         {

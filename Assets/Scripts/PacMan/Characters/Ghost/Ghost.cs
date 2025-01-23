@@ -1,45 +1,54 @@
+using Moonthsoft.Core.Definitions.Sounds;
 using Moonthsoft.Core.FSM;
+using Moonthsoft.Core.Managers;
 using Moonthsoft.Core.Utils.Direction;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace Moonthsoft.PacMan
 {
     public class Ghost : Character
     {
         [SerializeField] private GhostType _type;
-        public GhostType Type { get { return _type; } }
-
 
         [SerializeField] private GhostState _initState;
+
+        private NodeGraph _lastNode = null;
+        private bool _speedUp = false;
+        private bool _isFrightened = false;
+
+        private IAudioManager _audioManager;
+
+        public GhostType Type { get { return _type; } }
+
         public GhostState InitState { get { return _initState; } }
 
         public bool IsFrightened { get { return _isFrightened; } }
 
-
         public BaseStateController<Ghost, GhostState> StateController { get; private set; }
+
         public void InitStateController(BaseStateController<Ghost, GhostState> stateController) { StateController = stateController; }
 
         public Animator Animator { get { return animator; } }
 
         public List<NodeGraph> Path { get; set; } = null;
 
+        [Inject] private void InjectAudioManager(IAudioManager audioManager) { _audioManager = audioManager; }
 
-        private NodeGraph _lastNode = null;
-        private bool _speedUp = false;
-        private bool _isFrightened = false;
-
-
+        private void Start()
+        {
+            LevelManager.ActivePowerUpEvent += ActivePowerUp;
+            LevelManager.FinishingPowerUpEvent += FinishingPowerUp;
+            LevelManager.ResetPowerUpEvent += ResetPowerUp;
+            LevelManager.DeactivePowerUpEvent += DeactivePowerUp;
+            LevelManager.ChangeChaseModeEvent += ChangeChaseMode;
+        }
 
         public void TurnAround()
         {
             (_lastNode, CurrentNode) = (CurrentNode, _lastNode);
             SetDirection(DirectionUtility.ReverseDirection(CurrentDir));
-        }
-
-        protected override NodeGraph GetInitialNode()
-        {
-            return LevelManager.Graph.GetGhostInitialNode(Type);
         }
 
         public override void ResetCharacter()
@@ -57,16 +66,49 @@ namespace Moonthsoft.PacMan
 
             StateController.SetState(GhostState.Eated);
 
+            _audioManager.PlayFx(Fx.EatGhost);
+
             LevelManager.FreezeGame(0.5f);
         }
 
-        private void Start()
+        protected override NodeGraph GetInitialNode()
         {
-            LevelManager.ActivePowerUpEvent += ActivePowerUp;
-            LevelManager.FinishingPowerUpEvent += FinishingPowerUp;
-            LevelManager.ResetPowerUpEvent += ResetPowerUp;
-            LevelManager.DeactivePowerUpEvent += DeactivePowerUp;
-            LevelManager.ChangeChaseModeEvent += ChangeChaseMode;
+            return LevelManager.Graph.GetGhostInitialNode(Type);
+        }
+
+        protected override void GetNextNode()
+        {
+            _lastNode = CurrentNode;
+
+            StateController.UpdateState();
+
+            SetDirection(_lastNode.GetDirNode(CurrentNode));
+
+            SetMove(true);
+        }
+
+        protected override float GetSpeedPercentage()
+        {
+            if (StateController.CurrentState == GhostState.Eated)
+            {
+                return LevelManager.GetSpeed(TypeSpeedPercentage.GhostEated);
+            }
+            else if (LevelManager.Graph.IsInTunnel(CurrentNode, _lastNode))
+            {
+                return LevelManager.GetSpeed(TypeSpeedPercentage.GhostTunnel);
+            }
+            else if (StateController.CurrentState == GhostState.Frightened)
+            {
+                return LevelManager.GetSpeed(TypeSpeedPercentage.GhostFrightened);
+            }
+            else if (_speedUp)
+            {
+                return LevelManager.GetSpeed(TypeSpeedPercentage.BlinkySpeedUp);
+            }
+            else
+            {
+                return LevelManager.GetSpeed(TypeSpeedPercentage.Ghost);
+            }
         }
 
         private void ActivePowerUp()
@@ -115,41 +157,6 @@ namespace Moonthsoft.PacMan
             else if (StateController.CurrentState == GhostState.Chase)
             {
                 StateController.SetState(GhostState.Scatter);
-            }
-        }
-
-        protected override void GetNextNode()
-        {
-            _lastNode = CurrentNode;
-
-            StateController.UpdateState();
-
-            SetDirection(_lastNode.GetDirNode(CurrentNode));
-
-            SetMove(true);
-        }
-
-        protected override float GetSpeedPercentage()
-        {
-            if (StateController.CurrentState == GhostState.Eated)
-            {
-                return LevelManager.GetSpeed(TypeSpeedPercentage.GhostEated);
-            }
-            else if (LevelManager.Graph.IsInTunnel(CurrentNode, _lastNode))
-            {
-                return LevelManager.GetSpeed(TypeSpeedPercentage.GhostTunnel);
-            }
-            else if (StateController.CurrentState == GhostState.Frightened)
-            {
-                return LevelManager.GetSpeed(TypeSpeedPercentage.GhostFrightened);
-            }
-            else if (_speedUp)
-            {
-                return LevelManager.GetSpeed(TypeSpeedPercentage.BlinkySpeedUp);
-            }
-            else
-            {
-                return LevelManager.GetSpeed(TypeSpeedPercentage.Ghost);
             }
         }
     }

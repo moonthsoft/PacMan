@@ -1,4 +1,5 @@
 using Moonthsoft.Core.Definitions.Scenes;
+using Moonthsoft.Core.Definitions.Sounds;
 using Moonthsoft.Core.Managers;
 using Moonthsoft.PacMan.Config;
 using System;
@@ -24,8 +25,10 @@ namespace Moonthsoft.PacMan
         private GameLogicLevelManager _logicManager;
         private TimerLevelManager _timerManager;
         private ItemsLevelManager _itemsManager;
+        private MusicLevelManager _musicLevelManager;
 
         private ILoadSceneManager _loadSceneManager;
+        private IAudioManager _audioManager;
 
         public bool IsChaseMode { get { return _timerManager.IsChaseMode; } }
         public Graph Graph { get { return _graph; } }
@@ -62,6 +65,7 @@ namespace Moonthsoft.PacMan
         }
 
         [Inject] private void InjectLoadSceneManager(ILoadSceneManager loadSceneManager) { _loadSceneManager = loadSceneManager; }
+        [Inject] private void InjectAudioManager(IAudioManager audioManager) { _audioManager = audioManager; }
 
         public override void InstallBindings()
         {
@@ -70,11 +74,12 @@ namespace Moonthsoft.PacMan
 
         private void Awake()
         {
-            _logicManager = new GameLogicLevelManager(this, _config.NumPlayerLives, _loadSceneManager);
+            _logicManager = new GameLogicLevelManager(this, _config.NumPlayerLives, _loadSceneManager, _audioManager);
             _timerManager = new TimerLevelManager(this);
-            _itemsManager = new ItemsLevelManager(this);
+            _itemsManager = new ItemsLevelManager(this, _audioManager);
+            _musicLevelManager = new MusicLevelManager(this, _audioManager);
 
-            ResetSateGame();
+            ResetSateGame(true);
         }
 
         public Ghost GetGhost(GhostType ghostType)
@@ -113,11 +118,10 @@ namespace Moonthsoft.PacMan
             return indx;
         }
 
-
         //GameLogicLevelManager Methods
         public void PlayerDie() { _logicManager.PlayerDie(); }
         private void CompleteLevel() { _logicManager.CompleteLevel(); }
-        private void ResetSateGame() { _logicManager.ResetSateGame(); }
+        private void ResetSateGame(bool playMusic) { _logicManager.ResetSateGame(playMusic); }
 
         //TimerLevelManager Methods
         public void ActiveTimer() { _timerManager.ActiveTimer(_config); }
@@ -130,5 +134,11 @@ namespace Moonthsoft.PacMan
         public void AddPowerUp(PowerUp powerUp) { _itemsManager.AddPowerUp(powerUp); }
         public void ActivePowerUp() { _itemsManager.ActivePowerUp(_config, _logicManager.CurrentLevel); }
         public void ResetItems() { _itemsManager.ResetItems(); }
+
+        //MusicLevelManager Methods
+        public void ActiveMusic(bool ghost = false) { _musicLevelManager.ActiveMusic(ghost); }
+        public void DeactiveMusic() { _musicLevelManager.DeactiveMusic(); }
+        public void AddGhostEated() { _musicLevelManager.AddGhostEated(); }
+        public void RemoveGhostEated() { _musicLevelManager.RemoveGhostEated(); }
     }
 }
