@@ -1,6 +1,7 @@
 using Moonthsoft.Core.Definitions.Direction;
 using Moonthsoft.Core.Managers;
 using Moonthsoft.Core.Utils.Direction;
+using UnityEngine;
 using Zenject;
 
 namespace Moonthsoft.PacMan
@@ -21,7 +22,10 @@ namespace Moonthsoft.PacMan
         // Update is called once per frame
         private void Update()
         {
-            CheckInput();
+            if (Time.timeScale > 0f)
+            {
+                CheckInput();
+            }
         }
 
         private void CheckInput()
@@ -30,19 +34,19 @@ namespace Moonthsoft.PacMan
 
             var dirAux = _NextDir;
 
-            if (movement.y == 1f && _NextDir != Direction.Up)
+            if (movement.y == 1f)
             {
                 _NextDir = Direction.Up;
             }
-            else if (movement.y == -1f && _NextDir != Direction.Down)
+            else if (movement.y == -1f)
             {
                 _NextDir = Direction.Down;
             }
-            else if (movement.x == 1f && _NextDir != Direction.Right)
+            else if (movement.x == 1f)
             {
                 _NextDir = Direction.Right;
             }
-            else if (movement.x == -1f && _NextDir != Direction.Left)
+            else if (movement.x == -1f)
             {
                 _NextDir = Direction.Left;
             }

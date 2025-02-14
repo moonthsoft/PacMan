@@ -1,9 +1,11 @@
 using Moonthsoft.Core.Definitions.Scenes;
 using Moonthsoft.Core.Definitions.Sounds;
 using Moonthsoft.Core.Managers;
+using Moonthsoft.PacMan.Config;
 using System;
 using UnityEngine;
 using Zenject;
+using static Zenject.CheatSheet;
 
 namespace Moonthsoft.PacMan
 {
@@ -13,6 +15,7 @@ namespace Moonthsoft.PacMan
 
         private int _numPlayerLives = 0;
         private int _currentLevel = 0;
+        private LevelUI _ui;
 
         private ILoadSceneManager _loadSceneManager;
         private readonly IAudioManager _audioManager;
@@ -20,11 +23,15 @@ namespace Moonthsoft.PacMan
         public int CurrentLevel { get { return _currentLevel; } }
 
         
-        public GameLogicLevelManager(LevelManager levelmanager, int numPlayerLives, ILoadSceneManager loadSceneManager, IAudioManager audioManager)
+        public GameLogicLevelManager(LevelManager levelmanager, LevelUI ui, Configuration config, ILoadSceneManager loadSceneManager, IAudioManager audioManager)
         {
             _levelmanager = levelmanager;
 
-            _numPlayerLives = numPlayerLives;
+            _ui = ui;
+
+            _numPlayerLives = config.NumPlayerLives;
+
+            _currentLevel = config.FirstLevel;
 
             _loadSceneManager = loadSceneManager;
 
@@ -42,9 +49,10 @@ namespace Moonthsoft.PacMan
 
         public void PlayerDie()
         {
-            _levelmanager.DeactiveMusic();
+            _levelmanager.DeactiveAllMusic();
 
             _audioManager.PlayFx(Fx.PacManDeath);
+
             float durationSound = _audioManager.GetFxLenght(Fx.PacManDeath);
             Action action = GameOver;
 
@@ -86,8 +94,12 @@ namespace Moonthsoft.PacMan
                 durationMusic = _audioManager.GetFxLenght(Fx.InitGame);
             }
 
-            Action activeMusic = () => _levelmanager.ActiveMusic();
-            _levelmanager.FreezeGame(durationMusic, activeMusic);
+            _ui.SetLevelUI(_currentLevel, _numPlayerLives);
+            _ui.ActiveReadyText(true);
+
+            Action action = () => _levelmanager.ActiveMusic();
+            action += () => _ui.ActiveReadyText(false);
+            _levelmanager.FreezeGame(durationMusic, action);
         }
 
         private void GameOver()

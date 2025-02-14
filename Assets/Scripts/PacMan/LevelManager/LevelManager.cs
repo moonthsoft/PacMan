@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using Zenject;
 
 namespace Moonthsoft.PacMan
@@ -14,6 +15,7 @@ namespace Moonthsoft.PacMan
     {
         [SerializeField] private Configuration _config;
 
+        [SerializeField] private LevelUI _ui;
         [SerializeField] private Graph _graph;
         [SerializeField] private Player _player;
 
@@ -26,9 +28,11 @@ namespace Moonthsoft.PacMan
         private TimerLevelManager _timerManager;
         private ItemsLevelManager _itemsManager;
         private MusicLevelManager _musicLevelManager;
+        private ScoreLevelManager _scoreLevelManager;
 
         private ILoadSceneManager _loadSceneManager;
         private IAudioManager _audioManager;
+        private IDataManager _dataManager;
 
         public bool IsChaseMode { get { return _timerManager.IsChaseMode; } }
         public Graph Graph { get { return _graph; } }
@@ -66,6 +70,7 @@ namespace Moonthsoft.PacMan
 
         [Inject] private void InjectLoadSceneManager(ILoadSceneManager loadSceneManager) { _loadSceneManager = loadSceneManager; }
         [Inject] private void InjectAudioManager(IAudioManager audioManager) { _audioManager = audioManager; }
+        [Inject] private void InjectDataManager(IDataManager dataManager) { _dataManager = dataManager; }
 
         public override void InstallBindings()
         {
@@ -74,12 +79,15 @@ namespace Moonthsoft.PacMan
 
         private void Awake()
         {
-            _logicManager = new GameLogicLevelManager(this, _config.NumPlayerLives, _loadSceneManager, _audioManager);
+            _logicManager = new GameLogicLevelManager(this, _ui, _config, _loadSceneManager, _audioManager);
             _timerManager = new TimerLevelManager(this);
-            _itemsManager = new ItemsLevelManager(this, _audioManager);
+            _itemsManager = new ItemsLevelManager(this, _config, _audioManager);
             _musicLevelManager = new MusicLevelManager(this, _audioManager);
+            _scoreLevelManager = new ScoreLevelManager(_ui, _dataManager);
 
             ResetSateGame(true);
+
+            ResetScore();
         }
 
         public Ghost GetGhost(GhostType ghostType)
@@ -118,6 +126,7 @@ namespace Moonthsoft.PacMan
             return indx;
         }
 
+
         //GameLogicLevelManager Methods
         public void PlayerDie() { _logicManager.PlayerDie(); }
         private void CompleteLevel() { _logicManager.CompleteLevel(); }
@@ -134,11 +143,16 @@ namespace Moonthsoft.PacMan
         public void AddPowerUp(PowerUp powerUp) { _itemsManager.AddPowerUp(powerUp); }
         public void ActivePowerUp() { _itemsManager.ActivePowerUp(_config, _logicManager.CurrentLevel); }
         public void ResetItems() { _itemsManager.ResetItems(); }
+        public void EatGhost() { _itemsManager.EatGhost(); }
 
         //MusicLevelManager Methods
         public void ActiveMusic(bool ghost = false) { _musicLevelManager.ActiveMusic(ghost); }
-        public void DeactiveMusic() { _musicLevelManager.DeactiveMusic(); }
+        public void DeactiveAllMusic() { _musicLevelManager.DeactiveAllMusic(); }
         public void AddGhostEated() { _musicLevelManager.AddGhostEated(); }
         public void RemoveGhostEated() { _musicLevelManager.RemoveGhostEated(); }
+
+        //ScoreLevelManager Methods
+        public void AddScore(int score) { _scoreLevelManager.AddScore(score); }
+        public void ResetScore() { _scoreLevelManager.ResetScore(); }
     }
 }

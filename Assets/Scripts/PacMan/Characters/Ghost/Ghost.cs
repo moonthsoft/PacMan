@@ -18,8 +18,6 @@ namespace Moonthsoft.PacMan
         private bool _speedUp = false;
         private bool _isFrightened = false;
 
-        private IAudioManager _audioManager;
-
         public GhostType Type { get { return _type; } }
 
         public GhostState InitState { get { return _initState; } }
@@ -33,8 +31,6 @@ namespace Moonthsoft.PacMan
         public Animator Animator { get { return animator; } }
 
         public List<NodeGraph> Path { get; set; } = null;
-
-        [Inject] private void InjectAudioManager(IAudioManager audioManager) { _audioManager = audioManager; }
 
         private void Start()
         {
@@ -66,9 +62,7 @@ namespace Moonthsoft.PacMan
 
             StateController.SetState(GhostState.Eated);
 
-            _audioManager.PlayFx(Fx.EatGhost);
-
-            LevelManager.FreezeGame(0.5f);
+            LevelManager.EatGhost();
         }
 
         protected override NodeGraph GetInitialNode()

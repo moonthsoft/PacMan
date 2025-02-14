@@ -10,6 +10,10 @@ namespace Moonthsoft.PacMan
 {
     public class ItemsLevelManager
     {
+        private readonly int SCORE_DOT;
+        private readonly int SCORE_POWER_UP;
+        private readonly int[] SCORE_EAT_GHOST;
+
         public event Action ActivePowerUpEvent;
         public event Action FinishingPowerUpEvent;
         public event Action ResetPowerUpEvent;
@@ -22,14 +26,24 @@ namespace Moonthsoft.PacMan
         private readonly List<Dot> _dots = new();
         private readonly List<PowerUp> _powerUps = new();
         private bool _eatDotSound1 = true;
+        private int _numGhostEated = 0;
 
         private IEnumerator _waitFinishPowerUpCoroutine = null;
 
-        public ItemsLevelManager(LevelManager levelmanager, IAudioManager audioManager)
+        public ItemsLevelManager(LevelManager levelmanager, Configuration config, IAudioManager audioManager)
         {
             _levelmanager = levelmanager;
 
             _audioManager = audioManager;
+
+            SCORE_DOT = config.Score[(int)TypeScore.Dot];
+            SCORE_POWER_UP = config.Score[(int)TypeScore.PowerUp];
+
+            SCORE_EAT_GHOST = new int[4];
+            SCORE_EAT_GHOST[0] = config.Score[(int)TypeScore.Ghost1];
+            SCORE_EAT_GHOST[1] = config.Score[(int)TypeScore.Ghost2];
+            SCORE_EAT_GHOST[2] = config.Score[(int)TypeScore.Ghost3];
+            SCORE_EAT_GHOST[3] = config.Score[(int)TypeScore.Ghost4];
         }
 
         public void AddDot(Dot dot)
@@ -44,11 +58,15 @@ namespace Moonthsoft.PacMan
 
             _numDots--;
 
+            _levelmanager.AddScore(SCORE_DOT);
+
             //TODO:
             //Blinky angry
 
             if (_numDots <= 0)
             {
+                _levelmanager.DeactiveAllMusic();
+
                 _levelmanager.FreezeGame(2f, completeLevel);
             }
         }
@@ -61,6 +79,10 @@ namespace Moonthsoft.PacMan
         public void ActivePowerUp(Configuration config, int currentLevel)
         {
             EatDotSound();
+
+            _levelmanager.AddScore(SCORE_POWER_UP);
+
+            _numGhostEated = 0;
 
             if (currentLevel < config.LastLevel)
             {
@@ -93,6 +115,23 @@ namespace Moonthsoft.PacMan
             }
         }
 
+        public void EatGhost()
+        {
+            _audioManager.PlayFx(Fx.EatGhost);
+
+            if (_numGhostEated < SCORE_EAT_GHOST.Length)
+            {
+                _levelmanager.AddScore(SCORE_EAT_GHOST[_numGhostEated]);
+                _numGhostEated++;
+            }
+            else
+            {
+                Debug.LogError("_numGhostEated is greater than " + SCORE_EAT_GHOST.Length);
+            }
+
+            _levelmanager.FreezeGame(0.5f);
+        }
+
         private void EatDotSound()
         {
             var clip = _eatDotSound1 ? Fx.EatDot1 : Fx.EatDot2;
@@ -121,6 +160,8 @@ namespace Moonthsoft.PacMan
             DeactivePowerUpEvent?.Invoke();
 
             _levelmanager.ActiveMusic(false);
+
+            _numGhostEated = 0;
 
             _waitFinishPowerUpCoroutine = null;
         }

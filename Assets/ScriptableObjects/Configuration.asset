@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Configuration
   m_EditorClassIdentifier: 
   _numPlayerLives: 2
+  _firstLevel: 0
   _lastLevel: 20
   _timeBlinkPowerUp: 2
   _timeSpawnGhost:
@@ -26,6 +27,7 @@ MonoBehaviour:
   - 4
   - 3
   - 2
+  _score: 0a00000032000000c8000000900100002003000040060000640000002c010000f4010000bc020000e8030000d0070000b80b000088130000
   _timeGhostMode:
     _sizeRow: 5
     _sizeColumn: 7

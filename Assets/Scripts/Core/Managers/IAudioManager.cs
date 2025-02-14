@@ -1,6 +1,5 @@
 using Moonthsoft.Core.Definitions.Sounds;
 using UnityEngine;
-using static Moonthsoft.Core.Managers.AudioManager;
 
 namespace Moonthsoft.Core.Managers
 {

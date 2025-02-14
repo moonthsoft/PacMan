@@ -9,6 +9,9 @@ namespace Moonthsoft.PacMan.Config
         [Header("The number of lives the player has befora a game over")]
         [SerializeField] private int _numPlayerLives = 2;
 
+        [Header("The level at which the game starts. This should be 0 by default, but can be changed to try other levels easily.")]
+        [SerializeField] private int _firstLevel = 0;
+
         [Header("The level at which ghosts no longer enter in Frightened or Scatter mode")]
         [SerializeField] private int _lastLevel = 20;
 
@@ -20,6 +23,9 @@ namespace Moonthsoft.PacMan.Config
 
         [Header("Power up duration per level")]
         [SerializeField] private float[] _durationPowerUp = new float[] { 6f, 5f, 4f, 3f, 2f };
+
+        [Header("The amount of score each element gives:\n0: Dot, 1: PowerUp, 2: Ghost1, 3: Ghost2, 4: Ghost3, 5: Ghost4,\n6: Cherry, 7: Strawberry, 8: Orange, 9: Apple, 10: Pineapple, 11: Galaxian, 12: Bell, 13: Key")]
+        [SerializeField] private int[] _score = new int[] { 10 };
 
         [Header("The duration of each mode per level, always starts with scatter, and then alternates with chase\nScatter, Chase, Scatter, Chase, Scatter, Chase, Scatter\nRaw: Level, Column: Time")]
         [SerializeField] private SerializableMatrix<float> _timeGhostMode = new(new float[][]
@@ -44,10 +50,12 @@ namespace Moonthsoft.PacMan.Config
         });
 
         public int NumPlayerLives { get { return _numPlayerLives; } }
+        public int FirstLevel { get { return _firstLevel; } }
         public int LastLevel { get { return _lastLevel; } }
         public float TimeBlinkPowerUp { get { return _timeBlinkPowerUp; } }
         public float[] TimeSpawnGhost { get { return _timeSpawnGhost; } }
         public float[] DurationPowerUp { get { return _durationPowerUp; } }
+        public int[] Score { get { return _score; } }
         public SerializableMatrix<float> TimeGhostMode { get { return _timeGhostMode; } }
         public SerializableMatrix<float> SpeedPercentage { get { return _speedPercentage; } }
 
@@ -69,5 +77,23 @@ namespace Moonthsoft.PacMan
         GhostTunnel,
         GhostEated,
         BlinkySpeedUp
+    }
+
+    public enum TypeScore
+    {
+        Dot,
+        PowerUp,
+        Ghost1,
+        Ghost2,
+        Ghost3,
+        Ghost4,
+        Cherry,
+        Strawberry,
+        Orange,
+        Apple,
+        Pineapple,
+        Galaxian,
+        Bell,
+        Key
     }
 }

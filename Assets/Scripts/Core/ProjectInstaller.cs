@@ -9,16 +9,19 @@ namespace Moonthsoft.Core
         [SerializeField] private LoadSceneManager _loadSceneManager;
         [SerializeField] private InputManager _inputManager;
         [SerializeField] private AudioManager _audioManager;
+        [SerializeField] private DataManager _dataManager;
 
         public override void InstallBindings()
         {
             var loadSceneManagerInstance = Instantiate(_loadSceneManager);
             var inputManager = Instantiate(_inputManager);
             var audioManager = Instantiate(_audioManager);
+            var dataManager = Instantiate(_dataManager);
 
             Container.Bind<ILoadSceneManager>().FromInstance(loadSceneManagerInstance).AsSingle().NonLazy();
             Container.Bind<IInputManager>().FromInstance(inputManager).AsSingle().NonLazy();
             Container.Bind<IAudioManager>().FromInstance(audioManager).AsSingle().NonLazy();
+            Container.Bind<IDataManager>().FromInstance(dataManager).AsSingle().NonLazy();
         }
     }
 }

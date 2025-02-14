@@ -35,13 +35,13 @@ namespace Moonthsoft.PacMan
             _musicAudioSource = _audioManager.PlayFx(music, true);
         }
 
-        public void DeactiveMusic()
+        public void DeactiveAllMusic()
         {
-            if (_musicAudioSource != null)
-            {
-                _musicAudioSource.Stop();
-            }
+            DeactiveMusic();
+
+            ResetGhostEated();
         }
+
 
         public void AddGhostEated()
         {
@@ -60,6 +60,26 @@ namespace Moonthsoft.PacMan
             if (_ghostEatedAudioSource != null && _numGhostEated <= 0)
             {
                 _ghostEatedAudioSource.loop = false;
+                _ghostEatedAudioSource = null;
+            }
+        }
+
+        private void DeactiveMusic()
+        {
+            if (_musicAudioSource != null)
+            {
+                _musicAudioSource.Stop();
+            }
+        }
+
+        private void ResetGhostEated()
+        {
+            _numGhostEated = 0;
+
+            if (_ghostEatedAudioSource != null)
+            {
+                _ghostEatedAudioSource.loop = false;
+                _ghostEatedAudioSource.Stop();
                 _ghostEatedAudioSource = null;
             }
         }
