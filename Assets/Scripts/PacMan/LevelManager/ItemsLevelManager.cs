@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Zenject.CheatSheet;
 
 namespace Moonthsoft.PacMan
 {
@@ -21,6 +22,7 @@ namespace Moonthsoft.PacMan
 
         private readonly LevelManager _levelmanager;
         private readonly IAudioManager _audioManager;
+        private LevelUI _ui;
 
         private int _numDots = 0;
         private readonly List<Dot> _dots = new();
@@ -30,9 +32,11 @@ namespace Moonthsoft.PacMan
 
         private IEnumerator _waitFinishPowerUpCoroutine = null;
 
-        public ItemsLevelManager(LevelManager levelmanager, Configuration config, IAudioManager audioManager)
+        public ItemsLevelManager(LevelManager levelmanager, LevelUI ui, Configuration config, IAudioManager audioManager)
         {
             _levelmanager = levelmanager;
+
+            _ui = ui;
 
             _audioManager = audioManager;
 
@@ -115,14 +119,17 @@ namespace Moonthsoft.PacMan
             }
         }
 
-        public void EatGhost()
+        public void EatGhost(Vector3 pos)
         {
             _audioManager.PlayFx(Fx.EatGhost);
 
             if (_numGhostEated < SCORE_EAT_GHOST.Length)
             {
-                _levelmanager.AddScore(SCORE_EAT_GHOST[_numGhostEated]);
+                int score = SCORE_EAT_GHOST[_numGhostEated];
                 _numGhostEated++;
+
+                _levelmanager.AddScore(score);
+                _ui.ActiveScoreEatGhost(score, pos);
             }
             else
             {

@@ -62,7 +62,7 @@ namespace Moonthsoft.PacMan
 
             StateController.SetState(GhostState.Eated);
 
-            LevelManager.EatGhost();
+            LevelManager.EatGhost(transform.position);
         }
 
         protected override NodeGraph GetInitialNode()

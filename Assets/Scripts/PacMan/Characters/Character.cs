@@ -11,6 +11,8 @@ namespace Moonthsoft.PacMan
 
         [SerializeField] protected Animator animator;
 
+        [SerializeField] private SpriteRenderer _sprite;
+
         protected bool isMoving = false;
 
         private LevelManager _levelManager;
@@ -29,6 +31,7 @@ namespace Moonthsoft.PacMan
 
         [Inject] private void InjectLevelManager(LevelManager levelManager) { _levelManager = levelManager; }
 
+
         private void Awake()
         {
             ResetCharacter();
@@ -45,6 +48,14 @@ namespace Moonthsoft.PacMan
             transform.position = CurrentNode.transform.position;
 
             animator.Rebind();
+            animator.updateMode = AnimatorUpdateMode.Normal;
+
+            ActiveSprite(true);
+        }
+
+        public void ActiveSprite(bool active)
+        {
+            _sprite.enabled = active;
         }
 
         protected void Movement()

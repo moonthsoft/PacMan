@@ -81,7 +81,7 @@ namespace Moonthsoft.PacMan
         {
             _logicManager = new GameLogicLevelManager(this, _ui, _config, _loadSceneManager, _audioManager);
             _timerManager = new TimerLevelManager(this);
-            _itemsManager = new ItemsLevelManager(this, _config, _audioManager);
+            _itemsManager = new ItemsLevelManager(this, _ui, _config, _audioManager);
             _musicLevelManager = new MusicLevelManager(this, _audioManager);
             _scoreLevelManager = new ScoreLevelManager(_ui, _dataManager);
 
@@ -103,6 +103,18 @@ namespace Moonthsoft.PacMan
             Debug.LogError("The Ghost Type is not configured.");
 
             return null;
+        }
+
+        public Ghost[] GetGhosts()
+        {
+            Ghost[] ghosts = new Ghost[4];
+
+            ghosts[0] = _blinky;
+            ghosts[1] = _pinky;
+            ghosts[2] = _inky;
+            ghosts[3] = _clyde;
+
+            return ghosts;
         }
 
         public float GetSpeed(TypeSpeedPercentage type)
@@ -143,7 +155,7 @@ namespace Moonthsoft.PacMan
         public void AddPowerUp(PowerUp powerUp) { _itemsManager.AddPowerUp(powerUp); }
         public void ActivePowerUp() { _itemsManager.ActivePowerUp(_config, _logicManager.CurrentLevel); }
         public void ResetItems() { _itemsManager.ResetItems(); }
-        public void EatGhost() { _itemsManager.EatGhost(); }
+        public void EatGhost(Vector3 pos) { _itemsManager.EatGhost(pos); }
 
         //MusicLevelManager Methods
         public void ActiveMusic(bool ghost = false) { _musicLevelManager.ActiveMusic(ghost); }

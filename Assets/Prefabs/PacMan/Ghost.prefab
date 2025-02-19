@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 3327307861566262530}
+  _sprite: {fileID: 622317516144806372}
   _type: 0
   _initState: 4
 --- !u!114 &3510975582734782156

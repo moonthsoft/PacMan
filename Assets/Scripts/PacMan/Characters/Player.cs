@@ -14,6 +14,14 @@ namespace Moonthsoft.PacMan
         [Inject] private void InjectInputManager(IInputManager inputManager) { _inputManager = inputManager; }
 
 
+        public void ActiveAnimationDie()
+        {
+            animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+
+            animator.SetTrigger("die");
+        }
+
+
         protected override NodeGraph GetInitialNode()
         {
             return LevelManager.Graph.PlayerInitialNode;

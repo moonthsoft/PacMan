@@ -1,4 +1,5 @@
 using Moonthsoft.PacMan.Config;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,11 +16,20 @@ namespace Moonthsoft.PacMan
 
         [SerializeField] private TMP_Text _readyText;
 
+        [SerializeField] private TMP_Text[] _scoreEatGhostTexts;
+
         [SerializeField] private TMP_Text _2UPHeader;
         [SerializeField] private TMP_Text _1UPScore;
         [SerializeField] private TMP_Text _2UPScore;
         [SerializeField] private TMP_Text _HighScore;
 
+        private void Awake()
+        {
+            for (int i = 0; i < _scoreEatGhostTexts.Length; ++i)
+            {
+                _scoreEatGhostTexts[i].gameObject.SetActive(false);
+            }
+        }
 
         public void SetLevelUI(int level, int lives)
         {
@@ -83,9 +93,43 @@ namespace Moonthsoft.PacMan
             SetScore(_HighScore, score);
         }
 
+        public void ActiveScoreEatGhost(int score, Vector3 pos)
+        {
+            TMP_Text scoreText = null;
+
+            for (int i = 0; i < _scoreEatGhostTexts.Length; ++i)
+            {
+                if (!_scoreEatGhostTexts[i].gameObject.activeSelf)
+                {
+                    scoreText = _scoreEatGhostTexts[i];
+                    break;
+                }
+            }
+
+            if (scoreText == null)
+            {
+                Debug.LogError("There is no _scoreEatGhostTexts available.");
+            }
+
+            scoreText.gameObject.SetActive(true);
+
+            scoreText.transform.position = pos;
+
+            scoreText.text = score.ToString();
+
+            StartCoroutine(DeactiveScoreEatGhostCoroutine(scoreText.gameObject));
+        }
+
         private void SetScore(TMP_Text text, int score)
         {
             text.text = score.ToString();
+        }
+
+        private IEnumerator DeactiveScoreEatGhostCoroutine(GameObject scoreText)
+        {
+            yield return new WaitForSeconds(0.1f);
+
+            scoreText.SetActive(false);
         }
     }
 }

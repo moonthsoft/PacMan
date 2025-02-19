@@ -1,3 +1,4 @@
+using Codice.CM.Common.Tree;
 using Moonthsoft.Core.Definitions.Scenes;
 using Moonthsoft.Core.Definitions.Sounds;
 using Moonthsoft.Core.Managers;
@@ -62,6 +63,14 @@ namespace Moonthsoft.PacMan
                 action = () => ResetSateGame(false);
             }
 
+            _levelmanager.Player.ActiveAnimationDie();
+
+            var ghosts = _levelmanager.GetGhosts();
+            for (int i = 0; i < ghosts.Length; ++i)
+            {
+                ghosts[i].ActiveSprite(false);
+            }
+
             _levelmanager.FreezeGame(durationSound, action);
         }
 
@@ -69,20 +78,13 @@ namespace Moonthsoft.PacMan
         {
             _levelmanager.Player.ResetCharacter();
 
-            var blinky = _levelmanager.GetGhost(GhostType.Blinky);
-            var pinky = _levelmanager.GetGhost(GhostType.Pinky);
-            var inky = _levelmanager.GetGhost(GhostType.Inky);
-            var clyde = _levelmanager.GetGhost(GhostType.Clyde);
+            var ghosts = _levelmanager.GetGhosts();
+            for (int i = 0; i < ghosts.Length; ++i)
+            {
+                ghosts[i].ResetCharacter();
 
-            blinky.ResetCharacter();
-            pinky.ResetCharacter();
-            inky.ResetCharacter();
-            clyde.ResetCharacter();
-
-            InitGhostStateController(blinky);
-            InitGhostStateController(pinky);
-            InitGhostStateController(inky);
-            InitGhostStateController(clyde);
+                InitGhostStateController(ghosts[i]);
+            }
 
             _levelmanager.ActiveTimer();
 
