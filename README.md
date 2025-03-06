@@ -1,9 +1,11 @@
 ### Description:
 This project is a simple clone of the original Pac-Man arcade game. While it aims to be similar to the original, it is not an exact copy.
+
 The main goal of this project is to showcase my skills as a C# programmer and Unity developer in a small project where the code can be easily analyzed.
 
 ### Execution:
 Unity Version: Unity 6.0.25f1
+
 Open the "Game" or "Init" scene in the following folder:
 -PacMan/Assets/Scenes/Game.unity
 -PacMan/Assets/Scenes/Init.unity
@@ -27,6 +29,7 @@ Pac-Man can be controlled using the WASD keys or the arrow keys.
 
 ### Project Structure:
 The project is located in the Assets folder, with most subfolders divided into two main sections: Core and PacMan.
+
 Core contains generic elements that can be used in multiple games. PacMan contains elements specific to this project.
 
 ### The project's main folders are:
@@ -57,6 +60,7 @@ The game architecture is based on managers, accessed through dependency injectio
 
 ### Artificial Intelligence:
 The ghosts' AI is based on a finite state machine (FSM). Each ghost has multiple states and a unique personality, achieved through different behaviors in the Chase state.
+
 Additionally, ghosts use a simple pathfinding system based on a graph, calculating the shortest path to a target node without turning 180°.
 		
 ### Ghost states:
@@ -93,4 +97,5 @@ In the Game scene hierarchy, the following elements can be found:
 
 ### Credits:
 This project was developed by Antonio García Tortosa.
+
 Audio and sprites were sourced from the original Pac-Man arcade game.
