@@ -1,8 +1,12 @@
-using Moonthsoft.Core;
 using UnityEngine;
+using Moonthsoft.Core;
 
 namespace Moonthsoft.PacMan.Config
 {
+    /// <summary>
+    /// Class for the ScriptableObject that contains the data that it uses to configure the game, 
+    /// such as the number of initial lives of the player, the speed of the characters...
+    /// </summary>
     [CreateAssetMenu(menuName = "PacMan/Configuration")]
     public class Configuration : ScriptableObject
     {
@@ -49,6 +53,7 @@ namespace Moonthsoft.PacMan.Config
             new float[] { 1.00f,  0.95f,    0.60f,          0.50f,          1.70f,        1.00f }, //Level +4
         });
 
+
         public int NumPlayerLives { get { return _numPlayerLives; } }
         public int FirstLevel { get { return _firstLevel; } }
         public int LastLevel { get { return _lastLevel; } }
@@ -59,6 +64,7 @@ namespace Moonthsoft.PacMan.Config
         public SerializableMatrix<float> TimeGhostMode { get { return _timeGhostMode; } }
         public SerializableMatrix<float> SpeedPercentage { get { return _speedPercentage; } }
 
+
         private void OnValidate()
         {
             _timeGhostMode.ValidateMatrix();
@@ -67,6 +73,9 @@ namespace Moonthsoft.PacMan.Config
     }
 }
 
+
+//If you modify the enums, for example, by adding more elements,
+//you must also modify the config and redo the ScriptableObject.
 namespace Moonthsoft.PacMan
 {
     public enum TypeSpeedPercentage

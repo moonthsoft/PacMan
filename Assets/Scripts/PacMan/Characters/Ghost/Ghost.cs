@@ -1,36 +1,32 @@
-using Moonthsoft.Core.Definitions.Sounds;
-using Moonthsoft.Core.FSM;
-using Moonthsoft.Core.Managers;
-using Moonthsoft.Core.Utils.Direction;
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
+using Moonthsoft.Core.FSM;
+using Moonthsoft.Core.Utils.Direction;
 
 namespace Moonthsoft.PacMan
 {
+    /// <summary>
+    /// Controls the logic of the Ghosts. Mainly movement and animations. 
+    /// Also the initialization and calls to the StateController that is in charge of its AI.
+    /// </summary>
     public class Ghost : Character
     {
-        [SerializeField] private GhostType _type;
-
-        [SerializeField] private GhostState _initState;
-
         private NodeGraph _lastNode = null;
         private bool _speedUp = false;
         private bool _isFrightened = false;
 
+        [SerializeField] private GhostType _type;
+        [SerializeField] private GhostState _initState;
+
         public GhostType Type { get { return _type; } }
-
         public GhostState InitState { get { return _initState; } }
-
         public bool IsFrightened { get { return _isFrightened; } }
-
-        public BaseStateController<Ghost, GhostState> StateController { get; private set; }
-
-        public void InitStateController(BaseStateController<Ghost, GhostState> stateController) { StateController = stateController; }
-
         public Animator Animator { get { return animator; } }
 
         public List<NodeGraph> Path { get; set; } = null;
+        public BaseStateController<Ghost, GhostState> StateController { get; private set; }
+        public void InitStateController(BaseStateController<Ghost, GhostState> stateController) { StateController = stateController; }
+
 
         private void Start()
         {

@@ -1,15 +1,18 @@
-using UnityEditor;
 using UnityEngine;
 
 namespace Moonthsoft.PacMan
 {
+    /// <summary>
+    /// Class that draws ghost gizmos in the scene, to show their pathfainding routes and information related to their AI behavior. 
+    /// Used for debugging the AI.
+    /// </summary>
     [ExecuteInEditMode]
     public class GhostEditor : MonoBehaviour
     {
 #if UNITY_EDITOR
         [SerializeField] private Ghost _ghost;
-
         [SerializeField] private bool _showGizmos;
+
 
         private void OnDrawGizmos()
         {

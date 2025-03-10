@@ -4,6 +4,9 @@ using Moonthsoft.Core.Managers;
 
 namespace Moonthsoft.Core
 {
+    /// <summary>
+    /// Class responsible for instantiating and injecting the dependencies of the game's general managers.
+    /// </summary>
     public class ProjectInstaller : MonoInstaller<ProjectInstaller>
     {
         [SerializeField] private LoadSceneManager _loadSceneManager;

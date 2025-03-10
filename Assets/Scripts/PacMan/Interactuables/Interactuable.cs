@@ -3,13 +3,17 @@ using UnityEngine;
 
 namespace Moonthsoft.PacMan
 {
+    /// <summary>
+    /// Base class for interactables elements, which serves as the basis for the classes Items and level elements.
+    /// This class is responsible for managing collisions between the interactive and the characters.
+    /// </summary>
     public abstract class Interactuable : MonoBehaviour
     {
+        protected static readonly Dictionary<GameObject, Character> characters = new();
         protected abstract string[] CollidableTags { get; }
 
-        protected abstract void EnterTrigger(Character character);
 
-        protected static readonly Dictionary<GameObject, Character> characters = new();
+        protected abstract void EnterTrigger(Character character);
 
 
         private void OnTriggerEnter2D(Collider2D collider)

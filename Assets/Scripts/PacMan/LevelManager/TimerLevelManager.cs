@@ -1,14 +1,17 @@
-using Moonthsoft.PacMan.Config;
 using System;
 using System.Collections;
 using UnityEngine;
+using Moonthsoft.PacMan.Config;
 
 namespace Moonthsoft.PacMan
 {
+    /// <summary>
+    /// Level manager subclass in charge of of the level timer, 
+    /// since the state of the ghosts changes between Scatter and Chase every time.
+    /// It also has the logic of stopping the game for a while, which is activated for example by eating a ghost.
+    /// </summary>
     public class TimerLevelManager
     {
-        public event Action ChangeChaseModeEvent;
-
         private readonly LevelManager _levelmanager;
 
         private float _totalTime = 0f;
@@ -18,7 +21,11 @@ namespace Moonthsoft.PacMan
         private IEnumerator _iterationModeGhostCoroutine = null;
         private IEnumerator _increasesTotalTime = null;
 
+        public event Action ChangeChaseModeEvent;
+
         public bool IsChaseMode { get { return _isChaseMode; } }
+
+        
 
         public TimerLevelManager(LevelManager levelmanager)
         {

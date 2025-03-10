@@ -1,26 +1,30 @@
-using Moonthsoft.PacMan;
 using UnityEngine;
 
-public class GhostCollider : Interactuable
+namespace Moonthsoft.PacMan
 {
-    [SerializeField] private Ghost ghost;
-
-    protected override string[] CollidableTags { get { return new string[] { "Player" }; } }
-
-    private GhostState State { get { return ghost.StateController.CurrentState; } }
-
-
-    protected sealed override void EnterTrigger(Character character)
+    /// <summary>
+    /// Class in charge of managing the ghost's collisions.
+    /// </summary>
+    public class GhostCollider : Interactuable
     {
-        if (State != GhostState.Eated)
+        [SerializeField] private Ghost ghost;
+
+        protected override string[] CollidableTags { get { return new string[] { "Player" }; } }
+        private GhostState State { get { return ghost.StateController.CurrentState; } }
+
+
+        protected sealed override void EnterTrigger(Character character)
         {
-            if (State == GhostState.Frightened)
+            if (State != GhostState.Eated)
             {
-                ghost.Die();
-            }
-            else
-            {
-                ghost.LevelManager.PlayerDie();
+                if (State == GhostState.Frightened)
+                {
+                    ghost.Die();
+                }
+                else
+                {
+                    ghost.LevelManager.PlayerDie();
+                }
             }
         }
     }

@@ -1,8 +1,11 @@
-using Moonthsoft.Core.FSM;
 using UnityEngine;
+using Moonthsoft.Core.FSM;
 
 namespace Moonthsoft.PacMan
 {
+    /// <summary>
+    /// Ghost state manager, the SetState method changes the state, if the conditions necessary for the change to occur are valid.
+    /// </summary>
     public class GhostStateController : BaseStateController<Ghost, GhostState>
     {
         private readonly GhostBaseState _chaseState;

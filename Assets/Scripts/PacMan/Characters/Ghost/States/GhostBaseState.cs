@@ -1,10 +1,13 @@
-using Moonthsoft.Core.FSM;
-using Moonthsoft.Core.Utils.Direction;
 using System.Collections.Generic;
 using UnityEngine;
+using Moonthsoft.Core.FSM;
 
 namespace Moonthsoft.PacMan
 {
+    /// <summary>
+    /// Base state for ghost AI, custom classes that inherit will mainly have the GetPath function, 
+    /// which will return the destination node of the ghost based on its state.
+    /// </summary>
     public abstract class GhostBaseState : ScriptableObject, IState<Ghost>
     {
         protected Ghost ghost;
@@ -12,6 +15,9 @@ namespace Moonthsoft.PacMan
         protected LevelManager LevelManager { get { return ghost.LevelManager; } }
         protected Player Player { get { return LevelManager.Player; } }
         protected Graph Graph { get { return LevelManager.Graph; } }
+
+
+        protected abstract List<NodeGraph> GetPath();
 
 
         public virtual void Init(Ghost entity)
@@ -30,8 +36,6 @@ namespace Moonthsoft.PacMan
                 Debug.LogError("Node is null.");
             }
         }
-
-        protected abstract List<NodeGraph> GetPath();
 
         protected List<NodeGraph> GetPathToTarget(NodeGraph nodeTarget)
         {

@@ -1,28 +1,45 @@
-using Moonthsoft.Core.Definitions.Direction;
-using Moonthsoft.Core.Utils.Direction;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Moonthsoft.Core.Definitions.Direction;
+using Moonthsoft.Core.Utils.Direction;
 
 namespace Moonthsoft.PacMan
 {
+    /// <summary>
+    /// Node of the graph, contains the information related to that node and the functions to access it. 
+    /// For example, the nodes to which it is connected.
+    /// </summary>
     public class NodeGraph : MonoBehaviour
     {
         public const int NUM_NODES = 4;
 
+        private readonly float[] _sizeNodes = new float[NUM_NODES];
+
         [SerializeField] private bool _inTunnel = false;
         [SerializeField] private bool _toGraph = true;
+
+        [SerializeField] private Graph _graph;
 
         [SerializeField] private NodeGraph _upNode;
         [SerializeField] private NodeGraph _downNode;
         [SerializeField] private NodeGraph _leftNode;
         [SerializeField] private NodeGraph _rightNode;
 
-        private readonly float[] _sizeNodes = new float[NUM_NODES];
-
-        [SerializeField] private Graph _graph;
-
         public bool InTunnel { get { return _inTunnel; } }
+
+
+        private void Awake()
+        {
+            if (_toGraph)
+            {
+                _graph.Nodes.Add(this);
+            }
+
+            for (int i = 0; i < _sizeNodes.Length; ++i)
+            {
+                _sizeNodes[i] = GetSizeNode(GetNode(i));
+            }
+        }
 
         public float GetSize(int index)
         {
@@ -53,6 +70,7 @@ namespace Moonthsoft.PacMan
         {
             SetNode(node, (Direction)index);
         }
+
         public void SetNode(NodeGraph node, Direction direction)
         {
             switch (direction)
@@ -119,19 +137,6 @@ namespace Moonthsoft.PacMan
             }
 
             return neighborNode;
-        }
-
-        private void Awake()
-        {
-            if (_toGraph)
-            {
-                _graph.Nodes.Add(this);
-            }
-
-            for (int i = 0; i < _sizeNodes.Length; ++i)
-            {
-                _sizeNodes[i] = GetSizeNode(GetNode(i));
-            }
         }
 
         public float GetSizeNode(NodeGraph node)

@@ -6,21 +6,21 @@ using Moonthsoft.Core.UI;
 
 namespace Moonthsoft.Core.Managers
 {
+    /// <summary>
+    /// LoadSceneManager handles switching between scenes.
+    /// </summary>
     public class LoadSceneManager : MonoBehaviour, ILoadSceneManager
     {
         private const float TIME_IN_LOADING_SCENE = 0.2f;
 
-        [SerializeField] private BlackFade _blackFade;
-
         private WaitForSecondsRealtime _waitInLoadingScene;
-        
         private IEnumerator _loadCoroutine = null;
         private Scenes _currentScene;
 
+        [SerializeField] private BlackFade _blackFade;
+
         public bool IsLoading { get { return _loadCoroutine != null; } }
-
         public Scenes GetCurrentScene { get { return _currentScene; } }
-
 
 
         private void Awake()
@@ -43,7 +43,6 @@ namespace Moonthsoft.Core.Managers
             StartCoroutine(_loadCoroutine = LoadLevelCoroutine(scene));
         }
 
-
         private IEnumerator LoadLevelCoroutine(Scenes _scene)
         {
             yield return _blackFade.Active(true);
@@ -62,7 +61,6 @@ namespace Moonthsoft.Core.Managers
 
             _loadCoroutine = null;
         }
-
 
         private IEnumerator LoadSceneAsync(Scenes _scene)
         {

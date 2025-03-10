@@ -1,13 +1,17 @@
-using Moonthsoft.Core.FSM;
 using System.Collections.Generic;
 using UnityEngine;
+using Moonthsoft.Core.FSM;
 
 namespace Moonthsoft.PacMan
 {
+    /// <summary>
+    /// State of the ghost when Pac-Man eats it, it will go for the fastest route to the spawn area.
+    /// </summary>
     [CreateAssetMenu(menuName = "FSM/EatedState")]
     public class EatedState : GhostBaseState, IState<Ghost>
     {
         private bool _isInHome = false;
+
 
         public void Enter()
         {

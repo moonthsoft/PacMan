@@ -1,16 +1,21 @@
+using UnityEngine;
 using Moonthsoft.Core.Definitions.Direction;
 using Moonthsoft.Core.Utils.Direction;
-using UnityEngine;
 
 namespace Moonthsoft.PacMan
 {
+    /// <summary>
+    /// Class that draws gizmos in the scene to show the position of the graph nodes and their connections, 
+    /// so that you can visually check that the graph is correct.
+    /// </summary>
     [ExecuteInEditMode]
     public class NodeGraphEditor : MonoBehaviour
     {
 #if UNITY_EDITOR
+        private readonly NodeGraph[] _lastNodes = new NodeGraph[4];
+
         [SerializeField] private NodeGraph _node;
 
-        private readonly NodeGraph[] _lastNodes = new NodeGraph[4];
 
         private void OnEnable()
         {

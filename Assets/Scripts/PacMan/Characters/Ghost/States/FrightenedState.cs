@@ -1,9 +1,13 @@
-using Moonthsoft.Core.FSM;
 using System.Collections.Generic;
 using UnityEngine;
+using Moonthsoft.Core.FSM;
 
 namespace Moonthsoft.PacMan
 {
+    /// <summary>
+    /// State that the ghost enters when Pac-Mac eats a power up, upon entering this state he will turn 180º, 
+    /// and then choose the direction randomly.
+    /// </summary>
     [CreateAssetMenu(menuName = "FSM/FrightenedState")]
     public class FrightenedState : GhostBaseState, IState<Ghost>
     {
@@ -11,11 +15,6 @@ namespace Moonthsoft.PacMan
         {
             ghost.TurnAround();
         }
-
-        //public void Exit()
-        //{
-        //    ghost.TurnAround();
-        //}
 
         protected override List<NodeGraph> GetPath()
         {

@@ -1,23 +1,24 @@
+using UnityEngine;
 using Moonthsoft.Core.Definitions.Sounds;
 using Moonthsoft.Core.Managers;
-using UnityEngine;
 
 namespace Moonthsoft.PacMan
 {
+    /// <summary>
+    /// Level manager subclass in charge of game music, as it can change during the game, for example, 
+    /// when you eat a power up the music changes, and when the effect of this ends it changes again.
+    /// </summary>
     public class MusicLevelManager
     {
-        private readonly LevelManager _levelmanager;
+        private readonly IAudioManager _audioManager;
 
         private AudioSource _ghostEatedAudioSource = null;
         private AudioSource _musicAudioSource = null;
         private int _numGhostEated = 0;
+        
 
-        private readonly IAudioManager _audioManager;
-
-        public MusicLevelManager(LevelManager levelmanager, IAudioManager audioManager)
+        public MusicLevelManager(IAudioManager audioManager)
         {
-            _levelmanager = levelmanager;
-
             _audioManager = audioManager;
         }
 

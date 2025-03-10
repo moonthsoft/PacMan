@@ -1,18 +1,27 @@
+﻿using System;
 using UnityEngine;
-using System;
 
 namespace Moonthsoft.Core.FSM
 {
+    /// <summary>
+    /// Base class for the StateController. The StateController will be the class in charge of managing the FSM state changes based on the conditions of each entity.
+    /// </summary>
+    /// <typeparam name="T">Class of the entity that the AI ​​will have, for example, the enemy of the game.</typeparam>
+    /// <typeparam name="S">Enum containing all the states of that FSM.</typeparam>
     public abstract class BaseStateController<T, S> 
         where T : class 
         where S : Enum
     {
-        protected FiniteStateMachine<T> stateMachine = null;
-
         private readonly T _entity;
+
+        protected FiniteStateMachine<T> stateMachine = null;
         protected S currentState;
 
         public S CurrentState { get { return currentState; } }
+
+
+        public abstract void SetState(S state);
+
 
         public BaseStateController(T entity)
         {
@@ -23,8 +32,6 @@ namespace Moonthsoft.Core.FSM
         {
             return _entity;
         }
-
-        public abstract void SetState(S state);
 
         public void UpdateState()
         {

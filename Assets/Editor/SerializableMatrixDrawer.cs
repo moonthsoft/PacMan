@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Moonthsoft.Core
 {
+    /// <summary>
+    /// Class responsible for drawing the SerializableMatrix in the inspector.
+    /// </summary>
     [CustomPropertyDrawer(typeof(SerializableMatrix<>))]
     public class SerializableMatrixDrawer : PropertyDrawer
     {

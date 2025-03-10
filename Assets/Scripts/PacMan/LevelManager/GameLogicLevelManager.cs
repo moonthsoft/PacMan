@@ -1,25 +1,25 @@
-using Codice.CM.Common.Tree;
+using System;
+using UnityEngine;
 using Moonthsoft.Core.Definitions.Scenes;
 using Moonthsoft.Core.Definitions.Sounds;
 using Moonthsoft.Core.Managers;
 using Moonthsoft.PacMan.Config;
-using System;
-using UnityEngine;
-using Zenject;
-using static Zenject.CheatSheet;
 
 namespace Moonthsoft.PacMan
 {
+    /// <summary>
+    /// Level manager subclass in charge of the logic of the game, such as restarting the level when Pac-Man dies, 
+    /// or completing it when all the points are collected.
+    /// </summary>
     public class GameLogicLevelManager
     {
         private readonly LevelManager _levelmanager;
+        private readonly IAudioManager _audioManager;
+        private readonly ILoadSceneManager _loadSceneManager;
+        private readonly LevelUI _ui;
 
         private int _numPlayerLives = 0;
         private int _currentLevel = 0;
-        private LevelUI _ui;
-
-        private ILoadSceneManager _loadSceneManager;
-        private readonly IAudioManager _audioManager;
 
         public int CurrentLevel { get { return _currentLevel; } }
 
@@ -106,11 +106,10 @@ namespace Moonthsoft.PacMan
 
         private void GameOver()
         {
-            //TODO:
-            //chango to load credits scene
-
             Time.timeScale = 0f;
 
+            //TODO:
+            //change to load credits scene
             _loadSceneManager.LoadScene(Scenes.Game);
         }
 

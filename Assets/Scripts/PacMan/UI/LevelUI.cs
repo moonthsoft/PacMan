@@ -1,27 +1,27 @@
-using Moonthsoft.PacMan.Config;
 using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace Moonthsoft.PacMan
 {
+    /// <summary>
+    /// Logic for the game interface (View), is completely decoupled from the game logic of the LevelManager (Controller).
+    /// Manages the level interface, player lives, scoring, and the appearance of scene elements such as the score when devouring a ghost, 
+    /// or the ready! text at the start of the game.
+    /// </summary>
     public class LevelUI : MonoBehaviour
     {
         [SerializeField] private Image[] _lives;
-
         [SerializeField] private Image[] _fruitsLevel;
-
         [SerializeField] private Sprite[] _spriteFruits;
-
         [SerializeField] private TMP_Text _readyText;
-
         [SerializeField] private TMP_Text[] _scoreEatGhostTexts;
-
         [SerializeField] private TMP_Text _2UPHeader;
         [SerializeField] private TMP_Text _1UPScore;
         [SerializeField] private TMP_Text _2UPScore;
         [SerializeField] private TMP_Text _HighScore;
+
 
         private void Awake()
         {

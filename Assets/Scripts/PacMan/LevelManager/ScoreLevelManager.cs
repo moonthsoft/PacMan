@@ -1,14 +1,16 @@
 using Moonthsoft.Core.Managers;
-using Moonthsoft.PacMan.Config;
-using UnityEngine;
-using static Zenject.CheatSheet;
+using NUnit.Framework;
 
 namespace Moonthsoft.PacMan
 {
+    /// <summary>
+    /// Level manager subclass in charge of of the logic of the game's scoring.
+    /// </summary>
     public class ScoreLevelManager
     {
         private readonly LevelUI _ui;
         private readonly IDataManager _dataManager;
+
 
         public ScoreLevelManager(LevelUI ui, IDataManager dataManager)
         {

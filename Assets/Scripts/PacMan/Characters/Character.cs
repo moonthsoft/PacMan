@@ -1,36 +1,33 @@
-using Moonthsoft.Core.Definitions.Direction;
-using Moonthsoft.Core.Managers;
 using UnityEngine;
 using Zenject;
+using Moonthsoft.Core.Definitions.Direction;
 
 namespace Moonthsoft.PacMan
 {
+    /// <summary>
+    /// Base class for character entities, such as the player or enemies.
+    /// </summary>
     public abstract class Character : MonoBehaviour
     {
         private const float SPEED = 5f;
-
-        [SerializeField] protected Animator animator;
-
-        [SerializeField] private SpriteRenderer _sprite;
 
         protected bool isMoving = false;
 
         private LevelManager _levelManager;
 
+        [SerializeField] protected Animator animator;
+        [SerializeField] private SpriteRenderer _sprite;
+
         public LevelManager LevelManager { get { return _levelManager; } }
-
         public NodeGraph CurrentNode { get; set; }
-
         public Direction CurrentDir { get; protected set; }
 
         protected abstract void GetNextNode();
-
         protected abstract NodeGraph GetInitialNode();
-
         protected abstract float GetSpeedPercentage();
 
-        [Inject] private void InjectLevelManager(LevelManager levelManager) { _levelManager = levelManager; }
 
+        [Inject] private void InjectLevelManager(LevelManager levelManager) { _levelManager = levelManager; }
 
         private void Awake()
         {

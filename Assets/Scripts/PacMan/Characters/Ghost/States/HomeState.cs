@@ -1,16 +1,18 @@
-using Moonthsoft.Core.Definitions.Direction;
-using Moonthsoft.Core.FSM;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements.Experimental;
-using UnityEngine.XR;
+using Moonthsoft.Core.Definitions.Direction;
+using Moonthsoft.Core.FSM;
 
 namespace Moonthsoft.PacMan
 {
+    /// <summary>
+    /// State in which the ghost is in the spawn zone at the beginning of the game, waiting for the necessary time to pass for it to spawn.
+    /// </summary>
     [CreateAssetMenu(menuName = "FSM/HomeState")]
     public class HomeState : GhostBaseState, IState<Ghost>
     {
         private bool _toUp = true;
+
 
         public override void Init(Ghost entity)
         {

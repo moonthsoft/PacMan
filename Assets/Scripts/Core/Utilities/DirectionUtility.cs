@@ -1,9 +1,12 @@
+using System.Collections.Generic;
+
 namespace Moonthsoft.Core.Utils.Direction
 {
     using Moonthsoft.Core.Definitions.Direction;
-    using NUnit.Framework;
-    using System.Collections.Generic;
 
+    /// <summary>
+    /// Class with various utilities for directions, such as getting the opposite direction.
+    /// </summary>
     public static class DirectionUtility
     {
         public static Direction ReverseDirection(int index)

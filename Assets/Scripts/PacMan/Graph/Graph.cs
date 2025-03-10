@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static Moonthsoft.PacMan.Ghost;
 
 namespace Moonthsoft.PacMan
 {
+    /// <summary>
+    /// Level graph, which defines the paths that Pac-Man and the ghosts can move along. 
+    /// Contains references to certain nodes, such as the starting nodes for the ghosts and Pac-Man.
+    /// </summary>
     public class Graph : MonoBehaviour
     {
         [SerializeField] private NodeGraph _playerInitialNode;
@@ -24,9 +27,7 @@ namespace Moonthsoft.PacMan
         public static bool ShowGizmos { get; set; }
 
         public List<NodeGraph> Nodes { get; } = new();
-
         public NodeGraph PlayerInitialNode { get { return _playerInitialNode; } }
-
         public NodeGraph GhostSpawnNode { get { return GetGhostInitialNode(GhostType.Blinky); } }
         public NodeGraph GhostHomeNode { get { return GetGhostInitialNode(GhostType.Pinky); } }
 
@@ -83,7 +84,8 @@ namespace Moonthsoft.PacMan
 
         public bool IsInTunnel(NodeGraph nodeTarget, NodeGraph nodeComesFrom)
         {
-            if (nodeTarget == _nodeTunnelA || nodeTarget == _nodeTunnelB || nodeComesFrom == _nodeTunnelA || nodeComesFrom == _nodeTunnelB)
+            if (nodeTarget == _nodeTunnelA || nodeTarget == _nodeTunnelB 
+                || nodeComesFrom == _nodeTunnelA || nodeComesFrom == _nodeTunnelB)
             {
                 return true;
             }

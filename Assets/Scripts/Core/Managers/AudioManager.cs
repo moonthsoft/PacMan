@@ -1,24 +1,29 @@
-using System.Collections.Generic;
-using UnityEngine.Audio;
-using UnityEngine;
 using System;
+using UnityEngine;
+using UnityEngine.Audio;
 using Moonthsoft.Core.Definitions.Sounds;
 
 namespace Moonthsoft.Core.Managers
 {
+    /// <summary>
+    /// AudioManager is responsible for managing the playback and volume of the game's sounds and music.
+    /// It also manages the instantiation and handling of AudioSources.
+    /// </summary>
     public class AudioManager : MonoBehaviour, IAudioManager
     {
         #region Parameters
 
         private const int NUM_SOURCES_FX = 10;
 
+        [HideInInspector] public float masterVolume;
+
+        //As it is a simple project, there are only the Fx, but in larger projects it would be convenient to use other AudioSource groups
+        //for other types of sounds such as music, ambient sound, voice acting... for being able to manage the volume separately.
+        private AudioSource[] _sourcesFx;
+
         [SerializeField] private AudioMixer _mixer;
         [SerializeField] private AudioMixerGroup _mixerMaster;
         [SerializeField] private FxData[] _soundsDataFx;
-
-        private AudioSource[] _sourcesFx;
-
-        [HideInInspector] public float masterVolume;
 
         public static object Fx { get; set; }
 
@@ -102,6 +107,7 @@ namespace Moonthsoft.Core.Managers
             StopSources(_sourcesFx);
         }
 
+
         private void StopSources(AudioSource[] sources)
         {
             for (int i = 0; i < sources.Length; ++i)
@@ -172,7 +178,6 @@ namespace Moonthsoft.Core.Managers
             [Range(0f, 1f)]
             public float volume = 0.5f;
         }
-
 
         [System.Serializable]
         public class FxData : SoundData

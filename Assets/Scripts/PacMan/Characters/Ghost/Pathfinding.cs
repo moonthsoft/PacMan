@@ -1,31 +1,23 @@
-using Moonthsoft.Core.Definitions.Direction;
-using Moonthsoft.Core.Utils.Direction;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Moonthsoft.Core.Definitions.Direction;
+using Moonthsoft.Core.Utils.Direction;
 
 namespace Moonthsoft.PacMan
 {
+    /// <summary>
+    /// Class in charge of pathfinding ghosts, FindPath, its only method, traverses  the graph to find the fastest route to the destination node.
+    /// </summary>
     public class Pathfinding
     {
         public static List<NodeGraph> FindPath(NodeGraph start, NodeGraph target, Ghost ghost)
         {
-            //List of nodes to explore
             var nodesToExplore = new List<NodeGraph> { start };
-
-            //Set of already explored nodes
             var exploredNodes = new HashSet<NodeGraph>();
-
-            //The direction from which the node was reached
-            var fromDirection = new Dictionary<NodeGraph, Direction> { [start] = ghost.CurrentDir };
-
-            //Dictionary to reconstruct the path
-            var cameFrom = new Dictionary<NodeGraph, NodeGraph>();
-
-            //Accumulated costs to reach each node
-            var sizePath = new Dictionary<NodeGraph, float> { [start] = 0 };
-
-            //Estimated total costs for each node
+            var nodeReachedFromDirection = new Dictionary<NodeGraph, Direction> { [start] = ghost.CurrentDir };
+            var nodeCameFromNode = new Dictionary<NodeGraph, NodeGraph>();
+            var sizePathAccumulated = new Dictionary<NodeGraph, float> { [start] = 0 };
             var estimatedSizePath = new Dictionary<NodeGraph, float> { [start] = start.GetSizeNode(target) };
 
 
@@ -34,14 +26,14 @@ namespace Moonthsoft.PacMan
                 //Find the node with the lowest estimated size in the open set
                 NodeGraph current = nodesToExplore.OrderBy(node => estimatedSizePath.ContainsKey(node) ? estimatedSizePath[node] : float.MaxValue).First();
 
-                //If we reach the target node, reconstruct the path
+                //If we reach the destination node, we reconstruct and retourn the the path
                 if (current == target)
                 {
                     var path = new List<NodeGraph> { current };
 
-                    while (cameFrom.ContainsKey(current))
+                    while (nodeCameFromNode.ContainsKey(current))
                     {
-                        current = cameFrom[current];
+                        current = nodeCameFromNode[current];
                         path.Add(current);
                     }
 
@@ -52,7 +44,7 @@ namespace Moonthsoft.PacMan
 
                 nodesToExplore.Remove(current);
                 exploredNodes.Add(current);
-                var currentDir = fromDirection[current];
+                var currentDir = nodeReachedFromDirection[current];
 
                 for (int i = 0; i < NodeGraph.NUM_NODES; ++i)
                 {
@@ -69,22 +61,22 @@ namespace Moonthsoft.PacMan
                         continue;
                     }
 
-                    float tentativeGScore = sizePath[current] + current.GetSize(i);
+                    float tentativeGScore = sizePathAccumulated[current] + current.GetSize(i);
 
                     if (!nodesToExplore.Contains(nodeAux))
                     {
                         nodesToExplore.Add(nodeAux);
                     }
-                    else if (tentativeGScore >= sizePath.GetValueOrDefault(nodeAux, float.MaxValue))
+                    else if (tentativeGScore >= sizePathAccumulated.GetValueOrDefault(nodeAux, float.MaxValue))
                     {
                         continue;
                     }
 
-                    //This path is the best so far, update it
-                    cameFrom[nodeAux] = current;
-                    fromDirection[nodeAux] = (Direction)i;
-                    sizePath[nodeAux] = tentativeGScore;
-                    estimatedSizePath[nodeAux] = sizePath[nodeAux] + nodeAux.GetSizeNode(target);
+                    //We updated the route as it is the best
+                    nodeCameFromNode[nodeAux] = current;
+                    nodeReachedFromDirection[nodeAux] = (Direction)i;
+                    sizePathAccumulated[nodeAux] = tentativeGScore;
+                    estimatedSizePath[nodeAux] = sizePathAccumulated[nodeAux] + nodeAux.GetSizeNode(target);
                 }
             }
 

@@ -1,28 +1,26 @@
-using Moonthsoft.Core.Definitions.Sounds;
-using Moonthsoft.Core.Managers;
-using Moonthsoft.PacMan.Config;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Zenject.CheatSheet;
+using Moonthsoft.Core.Definitions.Sounds;
+using Moonthsoft.Core.Managers;
+using Moonthsoft.PacMan.Config;
 
 namespace Moonthsoft.PacMan
 {
+    /// <summary>
+    /// Level manager subclass in charge of the logic of the items, such as making the power up make the ghosts flee. 
+    /// It also increases the score for collecting the items and activates the sounds corresponding to them.
+    /// </summary>
     public class ItemsLevelManager
     {
         private readonly int SCORE_DOT;
         private readonly int SCORE_POWER_UP;
         private readonly int[] SCORE_EAT_GHOST;
 
-        public event Action ActivePowerUpEvent;
-        public event Action FinishingPowerUpEvent;
-        public event Action ResetPowerUpEvent;
-        public event Action DeactivePowerUpEvent;
-
         private readonly LevelManager _levelmanager;
         private readonly IAudioManager _audioManager;
-        private LevelUI _ui;
+        private readonly LevelUI _ui;
 
         private int _numDots = 0;
         private readonly List<Dot> _dots = new();
@@ -31,6 +29,12 @@ namespace Moonthsoft.PacMan
         private int _numGhostEated = 0;
 
         private IEnumerator _waitFinishPowerUpCoroutine = null;
+
+        public event Action ActivePowerUpEvent;
+        public event Action FinishingPowerUpEvent;
+        public event Action ResetPowerUpEvent;
+        public event Action DeactivePowerUpEvent;
+
 
         public ItemsLevelManager(LevelManager levelmanager, LevelUI ui, Configuration config, IAudioManager audioManager)
         {

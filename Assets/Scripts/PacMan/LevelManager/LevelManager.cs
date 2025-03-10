@@ -1,29 +1,21 @@
-using Moonthsoft.Core.Definitions.Scenes;
-using Moonthsoft.Core.Definitions.Sounds;
+using System;
+using UnityEngine;
+using Zenject;
 using Moonthsoft.Core.Managers;
 using Moonthsoft.PacMan.Config;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
-using Zenject;
 
 namespace Moonthsoft.PacMan
 {
+    /// <summary>
+    /// Class that handles the level logic, due to the complexity of this, it is divided into subclasses that handle specific logic, 
+    /// for example, ScoreLevelManager handles the logic related to the game score.
+    /// 
+    /// It also has the references to the main elements of the game such as Pac-Man, the ghosts or the graph.Thus, 
+    /// these elements can be accessed if you have the reference to the LevelManager.
+    /// The level manager can be accessed by injecting its dependency into other classes.
+    /// </summary>
     public class LevelManager : MonoInstaller
     {
-        [SerializeField] private Configuration _config;
-
-        [SerializeField] private LevelUI _ui;
-        [SerializeField] private Graph _graph;
-        [SerializeField] private Player _player;
-
-        [SerializeField] private Ghost _blinky;
-        [SerializeField] private Ghost _pinky;
-        [SerializeField] private Ghost _inky;
-        [SerializeField] private Ghost _clyde;
-
         private GameLogicLevelManager _logicManager;
         private TimerLevelManager _timerManager;
         private ItemsLevelManager _itemsManager;
@@ -34,9 +26,16 @@ namespace Moonthsoft.PacMan
         private IAudioManager _audioManager;
         private IDataManager _dataManager;
 
-        public bool IsChaseMode { get { return _timerManager.IsChaseMode; } }
-        public Graph Graph { get { return _graph; } }
-        public Player Player { get { return _player; } }
+        [SerializeField] private Configuration _config;
+
+        [SerializeField] private LevelUI _ui;
+        [SerializeField] private Graph _graph;
+        [SerializeField] private Player _player;
+
+        [SerializeField] private Ghost _blinky;
+        [SerializeField] private Ghost _pinky;
+        [SerializeField] private Ghost _inky;
+        [SerializeField] private Ghost _clyde;
 
         public event Action ChangeChaseModeEvent
         {
@@ -68,6 +67,11 @@ namespace Moonthsoft.PacMan
             remove { _itemsManager.DeactivePowerUpEvent -= value; }
         }
 
+        public bool IsChaseMode { get { return _timerManager.IsChaseMode; } }
+        public Graph Graph { get { return _graph; } }
+        public Player Player { get { return _player; } }
+
+
         [Inject] private void InjectLoadSceneManager(ILoadSceneManager loadSceneManager) { _loadSceneManager = loadSceneManager; }
         [Inject] private void InjectAudioManager(IAudioManager audioManager) { _audioManager = audioManager; }
         [Inject] private void InjectDataManager(IDataManager dataManager) { _dataManager = dataManager; }
@@ -77,12 +81,13 @@ namespace Moonthsoft.PacMan
             Container.Bind<LevelManager>().FromInstance(this).AsSingle();
         }
 
+
         private void Awake()
         {
             _logicManager = new GameLogicLevelManager(this, _ui, _config, _loadSceneManager, _audioManager);
             _timerManager = new TimerLevelManager(this);
             _itemsManager = new ItemsLevelManager(this, _ui, _config, _audioManager);
-            _musicLevelManager = new MusicLevelManager(this, _audioManager);
+            _musicLevelManager = new MusicLevelManager(_audioManager);
             _scoreLevelManager = new ScoreLevelManager(_ui, _dataManager);
 
             ResetSateGame(true);
@@ -144,10 +149,12 @@ namespace Moonthsoft.PacMan
         private void CompleteLevel() { _logicManager.CompleteLevel(); }
         private void ResetSateGame(bool playMusic) { _logicManager.ResetSateGame(playMusic); }
 
+
         //TimerLevelManager Methods
         public void ActiveTimer() { _timerManager.ActiveTimer(_config); }
         public bool CanGhostExitHome(GhostType type) { return _timerManager.CanGhostExitHome(_config, type); }
         public void FreezeGame(float duration, Action action = null) { _timerManager.FreezeGame(duration, action); }
+
 
         //ItemsLevelManager Methods
         public void AddDot(Dot dot) { _itemsManager.AddDot(dot); }
@@ -157,11 +164,13 @@ namespace Moonthsoft.PacMan
         public void ResetItems() { _itemsManager.ResetItems(); }
         public void EatGhost(Vector3 pos) { _itemsManager.EatGhost(pos); }
 
+
         //MusicLevelManager Methods
         public void ActiveMusic(bool ghost = false) { _musicLevelManager.ActiveMusic(ghost); }
         public void DeactiveAllMusic() { _musicLevelManager.DeactiveAllMusic(); }
         public void AddGhostEated() { _musicLevelManager.AddGhostEated(); }
         public void RemoveGhostEated() { _musicLevelManager.RemoveGhostEated(); }
+
 
         //ScoreLevelManager Methods
         public void AddScore(int score) { _scoreLevelManager.AddScore(score); }
