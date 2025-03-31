@@ -41,10 +41,10 @@ Core contains generic elements that can be used in multiple games. PacMan contai
 - __Prefabs:__ Includes game prefabs, such as managers, ghosts, items, and the graph system for pathfinding.
 - __Resources:__ Special Unity folder where the ProjectContext prefab is stored to enable dependency injection for managers.
 - __Scenes:__ Contains the various game scenes:
-- __Game:__ The main gameplay scene.
-- __Init:__ The first scene executed, which simply loads the Game scene.
-- __Loading:__ A temporary scene used when switching between scenes to avoid loading two at once.
-- __MainMenu:__ Currently unused, intended for the main menu (not yet implemented).
+	- __Game:__ The main gameplay scene.
+	- __Init:__ The first scene executed, which simply loads the Game scene.
+	- __Loading:__ A temporary scene used when switching between scenes to avoid loading two at once.
+	- __MainMenu:__ Currently unused, intended for the main menu (not yet implemented).
 - __Score:__ Currently unused, intended for the post-game score display.
 - __ScriptableObjects:__ Currently contains only the Configuration scriptable object, which is used to configure various game values such as Pac-Man and ghost speeds, and scoring.
 - __Scripts:__ Contains all game scripts.
