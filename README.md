@@ -17,6 +17,15 @@ Open the "Game" or "Init" scene in the following folder:
 ### Controls:
 Pac-Man can be controlled using the WASD keys or the arrow keys.
 
+### Links:
+WebGL executable on Itch.io:
+
+https://moonthsoft.itch.io/pacman
+
+Repository on GitHub:
+
+https://github.com/moonthsoft/PacMan
+
 ### Features:
 - Character movement through the maze.	
 - Ghost AI with different states and unique behaviors for each ghost.
