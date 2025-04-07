@@ -17,7 +17,7 @@ Open the "Game" or "Init" scene in the following folder:
 ### Controls:
 Pac-Man can be controlled using the WASD keys or the arrow keys.
 
-### Liks:
+### Links:
 WebGL executable on Itch.io:
 
 https://moonthsoft.itch.io/pacman
